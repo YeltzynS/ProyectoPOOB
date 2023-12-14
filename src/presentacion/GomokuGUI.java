@@ -8,20 +8,22 @@
  */
 package presentacion;
 
+import javax.swing.JButton;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
+import java.awt.Toolkit;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
 
 import dominio.Gomoku;
 import dominio.HumanoPlayer;
@@ -73,6 +75,10 @@ public class GomokuGUI extends JFrame implements ActionListener {
 		gomoku = new Gomoku("player1", "HumanoPlayer", "player2", "HumanoPlayer", "Normal");
 		setVisible(true);
 	}
+	
+	
+
+
 
 	/**
 	 * Configura y construye los componentes principales de la interfaz.
@@ -87,7 +93,7 @@ public class GomokuGUI extends JFrame implements ActionListener {
 
 		title = new TitleComponent();
 		JPanel contenedor = new JPanel();
-		contenedor.setLayout(new GridLayout(5, 1));
+		contenedor.setLayout(new GridLayout(6, 1));
 		contenedor.setBackground(Color.BLACK);
 		menuPrincipal.add(contenedor);
 		contenedor.setPreferredSize(size);
@@ -110,7 +116,7 @@ public class GomokuGUI extends JFrame implements ActionListener {
 
 		limiteFichas = new JButton("Limite de fichas");
 		limiteFichas.setForeground(Color.WHITE);
-		limiteFichas.setFont(new Font("SansSerif", Font.PLAIN, 30));
+		limiteFichas.setFont(new Font("SansSerif", Font.PLAIN,30));
 		limiteFichas.setOpaque(false);
 		limiteFichas.setContentAreaFilled(false);
 		limiteFichas.addActionListener(this);
@@ -123,6 +129,7 @@ public class GomokuGUI extends JFrame implements ActionListener {
 		exitButton.setContentAreaFilled(false);
 		exitButton.addActionListener(this);
 		exitButton.setFocusPainted(false);
+
 
 		contenedor.add(title);
 		contenedor.add(normal);
@@ -145,6 +152,7 @@ public class GomokuGUI extends JFrame implements ActionListener {
 		about2.setForeground(Color.WHITE);
 		about2.setFont(new Font("SansSerif", Font.PLAIN, 10));
 		panel.add(about2);
+
 	}
 
 	public void constructModePlayersDisplay() {

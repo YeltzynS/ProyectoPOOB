@@ -10,10 +10,17 @@ package presentacion;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import dominio.*;
 
 public class GameController implements ActionListener {
@@ -246,5 +253,39 @@ public class GameController implements ActionListener {
 					"Draw", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
+	public static void guardarEstadoJuego() {
+		try{
+		JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new FileNameExtensionFilter(null, "Archivos de datos (*.dat)", "dat"));
+            int seleccion = fileChooser.showSaveDialog(null);
+			if (seleccion == JFileChooser.APPROVE_OPTION) {
+                File archivo = fileChooser.getSelectedFile();
+        
 
+        // Obtener la puntuación actual de los jugadores
+        int puntuacionJugador1 = Gomoku.getInstance().getPlayer1().getScore();
+        int puntuacionJugador2 = Gomoku.getInstance().getPlayer2().getScore();
+
+            // Crear un BufferedWriter para escribir en el archivo
+            BufferedWriter writer = new BufferedWriter(new FileWriter(archivo));
+
+            // Escribir la información en el archivo
+            writer.write("Puntuación Jugador 1: " + puntuacionJugador1 + "\n");
+            writer.write("Puntuación Jugador 2: " + puntuacionJugador2 + "\n");
+
+            // Cerrar el BufferedWriter
+            writer.close();
+
+            // Mensaje de confirmación
+            JOptionPane.showMessageDialog(null,
+                    "El estado del juego se ha guardado exitosamente en " + archivo,
+                    "Guardar juego", JOptionPane.INFORMATION_MESSAGE);
+        }
+	} catch (IOException e) {
+            // Manejar cualquier error al escribir el archivo
+            JOptionPane.showMessageDialog(null,
+                    "Error al guardar el estado del juego: " + e.getMessage(),
+                    "Guardar juego", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }

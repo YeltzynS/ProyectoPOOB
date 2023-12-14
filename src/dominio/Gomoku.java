@@ -1,5 +1,7 @@
 package dominio;
 
+import java.io.Serializable;
+
 /**
  * La clase Gomoku representa el juego de Gomoku.
  * Contiene la lógica principal del juego y mantiene el estado del tablero y los
@@ -7,7 +9,7 @@ package dominio;
  * Autor: Chicuazuque-Sierra
  * version 2.0 - 2023/09/12
  */
-public class Gomoku {
+public class Gomoku{
     // Tablero del juego
     private static Celda[][] board = new Celda[Board.HEIGHT][Board.WIDTH];
     // Jugadores del juego
