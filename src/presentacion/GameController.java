@@ -10,11 +10,14 @@ package presentacion;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -265,6 +268,7 @@ public class GameController implements ActionListener {
         // Obtener la puntuación actual de los jugadores
         int puntuacionJugador1 = Gomoku.getInstance().getPlayer1().getScore();
         int puntuacionJugador2 = Gomoku.getInstance().getPlayer2().getScore();
+		int[][] posiciones = obtenerPosiciones();
 
             // Crear un BufferedWriter para escribir en el archivo
             BufferedWriter writer = new BufferedWriter(new FileWriter(archivo));
@@ -272,7 +276,12 @@ public class GameController implements ActionListener {
             // Escribir la información en el archivo
             writer.write("Puntuación Jugador 1: " + puntuacionJugador1 + "\n");
             writer.write("Puntuación Jugador 2: " + puntuacionJugador2 + "\n");
+			writer.write("Posiciones:\n");
+            for (int[] posicion : posiciones) {
+                writer.write(posicion[0] + "," + posicion[1] + "\n");
+            }
 
+			writer.write("Mensaje: " + Gomoku.getInstance().getMensaje() + "\n");
             // Cerrar el BufferedWriter
             writer.close();
 
@@ -288,4 +297,78 @@ public class GameController implements ActionListener {
                     "Guardar juego", JOptionPane.ERROR_MESSAGE);
         }
     }
+	public static void cargarEstadoJuego() {
+    try {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de datos (*.txt)", "txt"));
+        int seleccion = fileChooser.showOpenDialog(null);
+
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            File archivo = fileChooser.getSelectedFile();
+
+            BufferedReader reader = new BufferedReader(new FileReader(archivo));
+            String linea;
+            StringBuilder contenido = new StringBuilder();
+			boolean leyendoPosiciones = false;
+
+
+            while ((linea = reader.readLine()) != null) {
+                contenido.append(linea).append("\n");
+				if (linea.startsWith("Posiciones:")) {
+                    leyendoPosiciones = true;
+                    continue;
+                }
+
+                if (leyendoPosiciones) {
+                    // Procesar las posiciones
+                    String[] partes = linea.split(":");
+                    if (partes.length == 2) {
+                        String[] coordenadas = partes[1].trim().split(",");
+                        // Aquí podrías hacer algo con las coordenadas, por ejemplo, imprimir
+                        for (String coordenada : coordenadas) {
+                            System.out.println(coordenada.trim());
+                        }
+                    }
+                }
+            }
+            reader.close();
+			System.out.println("Contenido del archivo cargado:");
+            System.out.println(contenido.toString());
+
+
+
+            String[] lineas = contenido.toString().split("\n");
+            int puntuacionJugador1 = Integer.parseInt(lineas[0].split(":")[1].trim());
+            int puntuacionJugador2 = Integer.parseInt(lineas[1].split(":")[1].trim());
+
+
+            // Actualizar las puntuaciones en el juego
+            Gomoku.getInstance().getPlayer1().setScore(puntuacionJugador1);
+            Gomoku.getInstance().getPlayer2().setScore(puntuacionJugador2);
+
+            // Mensaje de éxito
+            JOptionPane.showMessageDialog(null, "Estado del juego cargado exitosamente.");
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error al cargar el estado del juego: " + e.getMessage(),
+                "Error", JOptionPane.ERROR_MESSAGE);
+    }
+	}
+	 // Método para obtener las posiciones de las celdas
+	private static int[][] obtenerPosiciones() {
+		int[][] posiciones = new int[Board.WIDTH * Board.HEIGHT][2];
+		int index = 0;
+
+		for (int i = 0; i < Board.HEIGHT; i++) {
+			for (int j = 0; j < Board.WIDTH; j++) {
+				if (BoardComponent.getCells()[i][j].getColor() != Cell.EMPTY) {
+					posiciones[index][0] = i;
+					posiciones[index][1] = j;
+					index++;
+				}
+			}
+		}
+
+		return Arrays.copyOfRange(posiciones, 0, index);
+	}
 }

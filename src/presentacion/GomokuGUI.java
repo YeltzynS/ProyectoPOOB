@@ -11,6 +11,9 @@ package presentacion;
 import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -477,6 +480,7 @@ public class GomokuGUI extends JFrame implements ActionListener {
 		TimerComponent.getTimer().start();
 
 	}
+	
 
 	/**
 	 * Método llamado cuando un jugador está en la arena de juego y desea volver al

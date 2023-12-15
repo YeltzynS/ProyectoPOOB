@@ -58,7 +58,10 @@ public class ButtonComponent extends JPanel implements ActionListener {
 	 * se hace clic en los botones de esta clase.
 	 */
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == saveButton){
+		if(e.getSource() == openButton){
+			GameController.cargarEstadoJuego();
+		
+		} else if(e.getSource() == saveButton){
 			GameController.guardarEstadoJuego();
 			GameController.restartGame();
 			TimerComponent.getTimer().start();
